@@ -7,8 +7,7 @@ if(isset($_POST['cetak'])){
  $tahun = $_POST['thn'];
  $id_kategori = $_POST['id_kategori'];
 $dompdf = new Dompdf();
-$query = mysqli_query($connect,"select *, debit-saldo as saldo_akhir from tbl_pengeluaran,tbl_kategori where tbl_pengeluaran.id_kategori=tbl_kategori.id_kategori and date_format(tanggal,'%M')= '$bulan' and YEAR(tanggal)= '$tahun' and tbl_pengeluaran.id_kategori='$id_kategori'");
-$html = "<center><h3>Laporan Pemasukan Bulan".$bulan." ".$tahun."</h3></center><hr/><br/>";
+$html = "<center><h3>Laporan Pemasukan Bulan ".$bulan."  ".$tahun."</h3></center><hr/><br/>";
 $html .= '<table border="0" width="100%">
         <tr align="center">
             <th>No</th>
@@ -16,10 +15,9 @@ $html .= '<table border="0" width="100%">
             <th>Kategori</th>
             <th>Detail</th>
             <th>Debit</th>
-            <th>Saldo Awal</th>
-            <th>Saldo Akhir</th>
             <th>Keterangan</th>
         </tr>';
+$query = mysqli_query($connect,"select * from tbl_transaksi a,tbl_kategori where a.id_kategori=tbl_kategori.id_kategori and date_format(tanggal,'%M')= '$bulan' and YEAR(tanggal)= '$tahun' and a.id_kategori='$id_kategori' and tipe = 'Pengeluaran'");
 $no = 1;
 while($row = mysqli_fetch_array($query))
 {
@@ -28,9 +26,7 @@ while($row = mysqli_fetch_array($query))
         <td>".$row['tanggal']."</td>
         <td>".$row['kategori']."</td>
         <td>".$row['detail']."</td>
-        <td>Rp. ".number_format($row['Debit'])."</td>
-        <td>Rp.".number_format($row['saldo'])."</td>
-        <td>Rp. ".number_format($row['saldo_akhir'])."</td>
+        <td>Rp. ".number_format($row['debit'])."</td>
         <td>".$row['keterangan']."</td>
     </tr>";
     $no++;
@@ -42,6 +38,6 @@ $dompdf->setPaper('A5', 'landscape');
 // Rendering dari HTML Ke PDF
 $dompdf->render();
 // Melakukan output file Pdf
-$dompdf->stream('Laporan Pengeluaran.pdf');
+$dompdf->stream('laporan_pemasukan.pdf');
 }
 ?>
