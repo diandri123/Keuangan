@@ -5,7 +5,6 @@ use Dompdf\Dompdf;
 if(isset($_POST['cetak'])){
     $bulan = $_POST['bln'];
  $tahun = $_POST['thn'];
- $id_kategori = $_POST['id_kategori'];
 $dompdf = new Dompdf();
 $html = "<center><h3>Laporan Riwayat Transaksi Bulan ".$bulan."  ".$tahun."</h3></center><hr/><br/>";
 $html .= '<table border="0" width="100%">
@@ -20,7 +19,7 @@ $html .= '<table border="0" width="100%">
             <th>Saldo</th>
             <th>Keterangan</th>
         </tr>';
-$query = mysqli_query($connect,"select *, (SELECT saldo_awal+SUM(kredit)-SUM(debit) FROM tbl_transaksi b,tbl_saldo_awal WHERE b.id_transaksi <= a.id_transaksi) AS b from tbl_transaksi a,tbl_kategori where a.id_kategori=tbl_kategori.id_kategori and date_format(tanggal,'%M')= '$bulan' and YEAR(tanggal)= '$tahun' and a.id_kategori='$id_kategori'");
+$query = mysqli_query($connect,"select *, (SELECT saldo_awal+SUM(kredit)-SUM(debit) FROM tbl_transaksi b,tbl_saldo_awal WHERE b.id_transaksi <= a.id_transaksi) AS b from tbl_transaksi a,tbl_kategori where a.id_kategori=tbl_kategori.id_kategori and date_format(tanggal,'%M')= '$bulan' and YEAR(tanggal)= '$tahun' ");
 $no = 1;
 while($row = mysqli_fetch_array($query))
 {
