@@ -54,18 +54,7 @@ if( ! isset($_SESSION['username'])){ // Jika tidak ada session username berarti 
                }
                 ?>
                </select></label>
-              <label>Kategori
-          <select name="id_kategori" >
-            <option>---Pilih Kategori---</option>
-            <?php
-                    $res=mysqli_query($connect,"SELECT * FROM tbl_kategori where kat_trans = 'Pemasukan' ORDER BY id_kategori ASC") or die(mysqli_error());   
-                      while($d = mysqli_fetch_array($res) ){
-                  ?>
-            <option value="<?php echo $d['id_kategori']; ?>"><?php echo $d['kategori']; ?></option>
-            <?php
-            }
-            ?>
-          </select></label>
+              
                <button type="submit" value="Lihat" name="cetak" class="btn btn-primary " >Cetak</button></form>
             </div>
 
